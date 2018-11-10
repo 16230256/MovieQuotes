@@ -1,25 +1,15 @@
 package ie.ul.deirdreshanahan.moviequotes;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 //one commenet
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 
@@ -37,21 +27,21 @@ public class MainActivity extends AppCompatActivity {
 
         // temp firebase testing areas.
         //to do comment out
-       final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("moviequotes")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
+    //   final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //    db.collection("moviequotes")
+    //            .get()
+    //            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    //                @Override
+    //                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+    //                    if (task.isSuccessful()) {
+     //                       for (QueryDocumentSnapshot document : task.getResult()) {
+     //                           Log.d(TAG, document.getId() + " => " + document.getData());
+     //                       }
+     //                   } else {
+      //                      Log.w(TAG, "Error getting documents.", task.getException());
+      //                  }
+      //              }
+      //          });
 
 
 
@@ -62,14 +52,14 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Added some Firestore Data", Snackbar.LENGTH_LONG)
                         .show();
                 // Create a new user with a first and last name
-                Map<String, Object> mq = new HashMap<>();
-                mTempCounter = mTempCounter + 1;
-                mq.put("quote", "Quote #" + mTempCounter);
-                mq.put("movie", "Movie #" + mTempCounter);
-                mq.put("born", 1815);
+    //            Map<String, Object> mq = new HashMap<>();
+    //            mTempCounter = mTempCounter + 1;
+    //            mq.put("quote", "Quote #" + mTempCounter);
+    //            mq.put("movie", "Movie #" + mTempCounter);
+    //            mq.put("born", 1815);
 
 // Add a new document with a generated ID
-                db.collection("moviequotes").add(mq);
+     //           db.collection("moviequotes").add(mq);
 
             }
         });
