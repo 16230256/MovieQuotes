@@ -1,24 +1,24 @@
 package ie.ul.deirdreshanahan.moviequotes;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
-//one commenet
+import com.google.firebase.firestore.FirebaseFirestore;
 
-
-
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String TAG = "MQ";
-    private int mTempCounter = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,26 +30,9 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+
         MovieQuoteAdapter movieQuoteAdapter = new MovieQuoteAdapter();
         recyclerView.setAdapter(movieQuoteAdapter);
-
-        // temp firebase testing areas.
-        //to do comment out
-    //   final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    //    db.collection("moviequotes")
-    //            .get()
-    //            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-    //                @Override
-    //                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-    //                    if (task.isSuccessful()) {
-     //                       for (QueryDocumentSnapshot document : task.getResult()) {
-     //                           Log.d(TAG, document.getId() + " => " + document.getData());
-     //                       }
-     //                   } else {
-      //                      Log.w(TAG, "Error getting documents.", task.getException());
-      //                  }
-      //              }
-      //          });
 
 
 
@@ -57,41 +40,37 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Added some Firestore Data", Snackbar.LENGTH_LONG)
-                        .show();
-                // Create a new user with a first and last name
-    //            Map<String, Object> mq = new HashMap<>();
-    //            mTempCounter = mTempCounter + 1;
-    //            mq.put("quote", "Quote #" + mTempCounter);
-    //            mq.put("movie", "Movie #" + mTempCounter);
-    //            mq.put("born", 1815);
+                showAddDialog();
 
-// Add a new document with a generated ID
-     //           db.collection("moviequotes").add(mq);
 
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    private void showAddDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.moviequote_dialog, null, false );
+        builder.setView(view);
+        builder.setTitle("Add a quote");
+        final TextView quoteEditText = view.findViewById(R.id.dialog_quote_edittext);
+        final TextView movieEditText = view.findViewById(R.id.dialog_movie_edittext);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+                Map<String, Object> mq = new HashMap<>();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+                mq.put(Constants.KEY_QUOTE, quoteEditText.getText().toString());
+                mq.put(Constants.KEY_MOVIE, movieEditText.getText().toString());
+                mq.put(Constants.KEY_CREATED, new Date());
 
-        return super.onOptionsItemSelected(item);
+                FirebaseFirestore.getInstance().collection(Constants.COLLECTION_PATH).add(mq);
+
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+
+
+        builder.create().show();
     }
 }
