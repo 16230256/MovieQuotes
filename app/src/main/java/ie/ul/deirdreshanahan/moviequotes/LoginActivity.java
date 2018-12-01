@@ -13,10 +13,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     }
-    public void handlesSignIn(View view) {
+    public void handleSignIn(View view) {
         Toast.makeText(this, "Sing in", Toast.LENGTH_LONG).show();
     }
-    public void hanlesSingUp(View view){
+    public void handleSingUp(View view){
         Toast.makeText(this, "Sing Up", Toast.LENGTH_LONG).show();
     }
 }
