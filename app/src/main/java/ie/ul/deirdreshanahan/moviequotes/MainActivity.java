@@ -39,15 +39,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(movieQuoteAdapter);
 
 //temp test of auth
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        //auth.signout()  //if you  want to sign back in as someone other anonymous
-        FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser == null) {
-            Log.d(Constants.TAG, "there is no user . Need to sign in!");
-            auth.signInAnonymously();
-        }else  {
-            Log.d(Constants.TAG, "there is a user . All set!");
-        }
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
+//        //auth.signout()  //if you  want to sign back in as someone other anonymous
+//        FirebaseUser currentUser = auth.getCurrentUser();
+//        if (currentUser == null) {
+//            Log.d(Constants.TAG, "there is no user . Need to sign in!");
+//            auth.signInAnonymously();
+//        }else  {
+//            Log.d(Constants.TAG, "there is a user . All set!");
+//        }
+//end of test for Auth
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
