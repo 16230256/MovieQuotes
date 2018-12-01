@@ -26,6 +26,12 @@ public class LoginActivity extends AppCompatActivity {
         mEmailEditText = findViewById(R.id.email_edittext);
         mPasswordEditText = findViewById(R.id.password_edittext);
         mAuth = FirebaseAuth.getInstance();
+        //*if you have already signed in new need to sign in again
+        if (mAuth.getCurrentUser() != null) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
+        }
     }
     public void handleSignIn(View view) {
         Toast.makeText(this, "Sing in", Toast.LENGTH_LONG).show();
