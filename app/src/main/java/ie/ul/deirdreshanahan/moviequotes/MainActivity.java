@@ -1,6 +1,7 @@
 package ie.ul.deirdreshanahan.moviequotes;
 
 import android.content.DialogInterface;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -8,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
@@ -34,7 +38,16 @@ public class MainActivity extends AppCompatActivity {
         MovieQuoteAdapter movieQuoteAdapter = new MovieQuoteAdapter();
         recyclerView.setAdapter(movieQuoteAdapter);
 
-
+//temp test of auth
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        //auth.signout()  //if you  want to sign back in as someone other anonymous
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser == null) {
+            Log.d(Constants.TAG, "there is no user . Need to sign in!");
+            auth.signInAnonymously();
+        }else  {
+            Log.d(Constants.TAG, "there is a user . All set!");
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
                 mq.put(Constants.KEY_QUOTE, quoteEditText.getText().toString());
                 mq.put(Constants.KEY_MOVIE, movieEditText.getText().toString());
+                //DS CODE
+                mq.put(Constants.KEY_USER_ID, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                //DSEND
+
                 mq.put(Constants.KEY_CREATED, new Date());
 
                 FirebaseFirestore.getInstance().collection(Constants.COLLECTION_PATH).add(mq);
